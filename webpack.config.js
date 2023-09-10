@@ -1,5 +1,6 @@
 let path = require('path');
 let MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 let conf = {
 	entry: './src/main.js',
@@ -61,6 +62,11 @@ let conf = {
 	plugins: [ 
 		new MiniCssExtractPlugin({
 			filename: 'main.css'
+		}),
+		new HtmlWebpackPlugin({
+			template: './src/index.html',
+			filename: 'index.html',
+			inject: 'body' 
 		})
 	]
 };
