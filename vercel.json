@@ -1,0 +1,281 @@
+
+Почему то видео не проигрывается просто серый экран
+import React from "react";
+import "./Css.css";
+
+const Css = () => {
+return (
+
+<main> <h1>Фишечка для Css</h1> <div className="video-container"> <video src="../video/test_video.mp4" controls></video> </div> </main> ); };
+export default Css;
+
+.video-container {
+position: relative;
+height: 0;
+padding-bottom: 56.25%;
+}
+
+.video-container video {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+}
+Ваши стили .video-container и .video-container video указывают на то, что контейнер видео имеет нулевую высоту (height: 0;) и пропорциональное соотношение сторон 16:9 (padding-bottom: 56.25%;), которое определяет размер видео. Давайте попробуем обновить стили.
+
+Вам нужно удалить строку height: 0; и добавить width: 100%;, чтобы видео занимало всю ширину контейнера:
+
+.video-container {
+  position: relative;
+  padding-bottom: 56.25%;
+  width: 100%;
+}
+
+.video-container video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+Если это не исправит проблему, убедитесь, что ваш файл видео находится в правильной папке (../video/test_video.mp4) и доступен.
+
+Альтернативно, если ваш файл видео находится в папке public, вы должны использовать process.env.PUBLIC_URL или абсолютный путь, чтобы указать на него:
+
+<video src={`${process.env.PUBLIC_URL}/video/test_video.mp4`} controls></video>
+<video src="/video/test_video.mp4" controls></video>
+С изменениями стиля и обновленным путем к видеофайлу, видео должно начать воспроизводиться.
+
+ERROR in ./src/video/vid.mp4 1:0
+Module parse failed: Unexpected character '' (1:0)
+You may need an appropriate loader to handle this file type, currently no loaders are configured to process this file. See https://webpack.js.org/concepts#loaders
+(Source code omitted for this binary file)
+
+import React from "react";
+import "./Css.css";
+
+import video from "../video/vid.mp4"
+
+const Css = () => {
+return (
+<main>
+<h1>Фишечка для Css</h1>
+<div className="video-container">
+<video src={video} controls></video>
+</div>
+</main>
+);
+};
+
+export default Css;
+
+Ошибкой является то, что Webpack не может обработать видео файлы без использования соответствующего загрузчика (loader). Чтобы исправить ошибку, вам нужно настроить Webpack для работы с видео файлами.
+
+Вот как настроить Webpack для React проекта, созданного с использованием Create React App:
+
+Установите file-loader:
+
+npm install --save-dev file-loader
+Откройте файл webpack.config.js в вашем проекте. Если вы используете Create React App, этот файл будет находиться в папке node_modules/react-scripts/config/.
+
+В секции module.rules, после правила для обработки файлов CSS, добавьте следующее правило для видео файлов:
+
+{
+  test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
+  loader: 'file-loader',
+  options: {
+    name: 'static/media/[name].[hash:8].[ext]'
+  }
+}
+Ваш Webpack теперь настроен для работы с видео файлами. Ваши импорты видео файлов в компонентах React должны работать.
+
+После настройки Webpack, пример вашего компонента Css должен быть изменен следующим образом:
+
+import React from "react";
+import "./Css.css";
+
+import video from "../video/vid.mp4";
+
+const Css = () => {
+  return (
+    <main>
+      <h1>Фишечка для Css</h1>
+      <div className="video-container">
+        <video src={video} controls></video>
+      </div>
+    </main>
+  );
+};
+
+export default Css;
+Если вы хотите настроить Webpack для разработанных с нуля проектов, то я могу вам помочь подробно с этим процессом.
+
+отлично ,я хочу залить свой сайт на git как это сделать и что добавить в gitignor
+
+Для размещения вашего сайта на GitHub, сначала создайте репозиторий на GitHub, затем выполните следующие шаги:
+
+Если еще не установлен, установите Git здесь: https://git-scm.com/downloads.
+
+Откройте терминал или командную строку и перейдите в корневой каталог вашего проекта.
+
+Инициализируйте локальный Git репозиторий, выполнив команду:
+
+git init
+Создайте файл .gitignore в корневом каталоге вашего проекта. В этом файле вы укажете файлы и папки, которые не следует отправлять на GitHub. Для стандартного React-проекта .gitignore должен выглядеть примерно так:
+
+# dependencies
+/node_modules
+
+# build output
+/build
+
+# environment variables
+.env
+
+# logs
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?   
+Добавьте файлы вашего проекта в локальный Git репозиторий, выполнив следующую команду:
+
+git add .
+Зафиксируйте файлы вашего проекта в локальный Git репозиторий, выполнив команду:
+
+git commit -m "Initial commit"
+Добавьте ссылку на удаленный репозиторий GitHub, используя команду:
+
+git remote add origin https://github.com/your-username/your-repo-name.git
+Замените your-username и your-repo-name на свой логин GitHub и имя вашего репозитория.
+
+Отправьте фиксированные файлы в удаленный репозиторий на GitHub, выполнив команду:
+
+git push -u origin master
+Теперь файлы вашего проекта доступны на GitHub.
+
+Если вы хотите предоставить доступ к своему сайту через GitHub Pages, следуйте инструкциям здесь: https://create-react-app.dev/docs/deployment/#github-pages.
+
+Обратите внимание, что для использования GitHub Pages ваш проект должен быть собран для продакшена. Это можно сделать, выполнив команду npm run build или yarn build, в зависимости от вашего менеджера пакетов.
+
+git push origin master
+error: src refspec master does not match any
+error: failed to push some refs to 'https://github.com/antipin-ia/for_yandex.git'
+
+Ошибка возникает из-за того, что в вашем локальном репозитории отсутствует ветка master. Вместо неё, многие проекты теперь используют ветку main по умолчанию.
+
+Чтобы решить эту проблему, выполните следующие действия:
+
+Проверьте список существующих локальных веток с помощью команды:
+
+git branch
+Важно определить, какая ветка используется в вашем проекте.
+
+Если у вас есть локальная ветка main, вы просто можете изменить команду push для использования main вместо master:
+
+git push -u origin main
+Затем Git будет использовать ветку main для отправки изменений в удаленный репозиторий.
+
+Если ваш локальный репозиторий не имеет веток master или main, создайте ветку main и установите её как активную, выполнив следующие команды:
+
+git checkout -b main
+git push -u origin main
+Эти команды создают ветку main, устанавливают её в качестве активной ветки, а затем отправляют изменения в удаленный репозиторий, используя ветку main.
+
+Эти шаги должны помочь исправить ошибку и успешно отправить изменения в ваш удаленный репозиторий на GitHub.
+
+[15:25:31.138] Running build in Cleveland, USA (East) – cle1
+[15:25:31.252] Cloning github.com/antipin-ia/for_yandex (Branch: main, Commit: 710666c)
+[15:25:31.498] Previous build cache not available
+[15:25:32.220] Cloning completed: 968.348ms
+[15:25:32.516] Running "vercel build"
+[15:25:33.008] Vercel CLI 32.2.0
+[15:25:33.576] Installing dependencies...
+[15:25:33.869] yarn install v1.22.17
+[15:25:33.889] info No lockfile found.
+[15:25:33.893] [1/4] Resolving packages...
+[15:25:41.521] warning webpack-dev-server > webpack-dev-middleware > memfs@3.6.0: this will be v4
+[15:25:41.996] [2/4] Fetching packages...
+[15:25:49.228] [3/4] Linking dependencies...
+[15:25:49.229] warning " > bootstrap@5.3.1" has unmet peer dependency "@popperjs/core@^2.11.8".
+[15:25:55.386] [4/4] Building fresh packages...
+[15:25:55.455] success Saved lockfile.
+[15:25:55.458] Done in 21.59s.
+[15:25:55.496] Running "yarn run build"
+[15:25:55.700] yarn run v1.22.17
+[15:25:55.723] $ webpack --mode production
+[15:26:01.799] assets by status 12.6 MiB [cached] 6 assets
+[15:26:01.799] assets by path . 485 KiB
+[15:26:01.800] asset main.css 323 KiB [compared for emit] [big] (name: main)
+[15:26:01.800] asset main.js 162 KiB [compared for emit] [minimized] (name: main) 1 related asset
+[15:26:01.800] Entrypoint main [big] 485 KiB (12.3 MiB) = main.css 323 KiB main.js 162 KiB 4 auxiliary assets
+[15:26:01.800] orphan modules 607 KiB (javascript) 279 KiB (asset) 7.93 KiB (runtime) [orphan] 89 modules
+[15:26:01.800] runtime modules 1.89 KiB 5 modules
+[15:26:01.800] cacheable modules 469 KiB (javascript) 323 KiB (css/mini-extract)
+[15:26:01.800] modules by path ./node_modules/ 208 KiB (javascript) 320 KiB (css/mini-extract)
+[15:26:01.800] javascript modules 208 KiB 7 modules
+[15:26:01.800] css modules 320 KiB
+[15:26:01.800] css ./node_modules/css-loader/dist/cjs.js!./node_modules/bootstrap/dist/css/bootstrap.min.css 228 KiB [built] [code generated]
+[15:26:01.800] css ./node_modules/css-loader/dist/cjs.js!./node_modules/bootstrap-icons/font/bootstrap-icons.css 91.6 KiB [built] [code generated]
+[15:26:01.800] modules by path ./src/ 3.67 KiB (css/mini-extract) 261 KiB (javascript)
+[15:26:01.801] modules by path ./src/Pages/ 1.18 KiB
+[15:26:01.801] css ./node_modules/css-loader/dist/cjs.js!./src/Pages/Me.css 544 bytes [built] [code generated]
+[15:26:01.801] + 3 modules
+[15:26:01.801] ./src/main.js + 14 modules 261 KiB [built] [code generated]
+[15:26:01.801] css ./node_modules/css-loader/dist/cjs.js!./src/ui/App.css 1.52 KiB [built] [code generated]
+[15:26:01.801] css ./node_modules/css-loader/dist/cjs.js!./src/Menu/menu.css 988 bytes [built] [code generated]
+[15:26:01.801]
+[15:26:01.801] WARNING in asset size limit: The following asset(s) exceed the recommended size limit (244 KiB).
+[15:26:01.801] This can impact web performance.
+[15:26:01.801] Assets:
+[15:26:01.801] static/media/vid.7abe0a7f.mp4 (11.9 MiB)
+[15:26:01.801] main.css (323 KiB)
+[15:26:01.802]
+[15:26:01.802] WARNING in entrypoint size limit: The following entrypoint(s) combined asset size exceeds the recommended limit (244 KiB). This can impact web performance.
+[15:26:01.802] Entrypoints:
+[15:26:01.802] main (485 KiB)
+[15:26:01.802] main.css
+[15:26:01.802] main.js
+[15:26:01.802]
+[15:26:01.802] WARNING in webpack performance recommendations:
+[15:26:01.802] You can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.
+[15:26:01.803] For more info visit https://webpack.js.org/guides/code-splitting/
+[15:26:01.803]
+[15:26:01.803] webpack 5.88.2 compiled with 3 warnings in 5413 ms
+[15:26:01.818] Done in 6.12s.
+[15:26:01.992] Error: No Output Directory named "public" found after the Build completed. You can configure the Output Directory in your Project Settings.
+[15:26:01.992] Learn More: https://vercel.link/missing-public-directory
+
+Ошибка вызвана тем, что после процесса сборки платформа Vercel не смогла найти каталог с настройками по умолчанию для статических файлов, который обычно называется "public". Вам нужно указать каталог с собранными файлами для раздачи на Vercel:
+
+Чтобы исправить данную ошибку, вы можете выполнить следующие действия:
+
+В корневом каталоге проекта создайте файл с именем "vercel.json" со следующим содержимым:
+
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/$1",
+      "headers": { "cache-control": "public,max-age=0,must-revalidate" }
+    }
+  ]
+}
