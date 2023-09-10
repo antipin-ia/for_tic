@@ -1,0 +1,13 @@
+.git-title{
+    margin-bottom: 50px;
+}
+
+.git-link {
+    display: inline-block;
+    color: #fff;
+    background-color: #007bff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    text-decoration: none;
+    }
