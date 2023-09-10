@@ -5,14 +5,15 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 let conf = {
 	entry: './src/main.js',
 	output: {
-		path: path.resolve(__dirname, './dist'),
-		filename: './main.js',
-		publicPath: '/'
+		path: path.resolve(__dirname, 'dist'), 
+		filename: 'main.js', 
+		
 	},
 	devServer: {
 		static: {
 			directory: path.join(__dirname, 'dist'),
-		}
+		},
+		
 	},
 	module: {
 		rules: [
@@ -64,7 +65,7 @@ let conf = {
 			filename: 'main.css'
 		}),
 		new HtmlWebpackPlugin({
-			template: './dist/index.html',
+			template: './src/index.html',
 			filename: 'index.html',
 			inject: 'body' 
 		})
