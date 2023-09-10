@@ -5,13 +5,13 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 let conf = {
 	entry: './src/main.js',
 	output: {
-		path: path.resolve(__dirname, './public'),
-		filename: 'main.js',
-		publicPath: '/dist/'
+		path: path.resolve(__dirname, './dist'),
+		filename: './main.js',
+		publicPath: '/'
 	},
 	devServer: {
 		static: {
-			directory: path.join(__dirname, 'public'),
+			directory: path.join(__dirname, 'dist'),
 		}
 	},
 	module: {
@@ -43,9 +43,9 @@ let conf = {
 				test: /\.(png|jpe?g|gif|svg)$/i,
 				use: [
 				  {
-					loader: 'url-loader', // или 'file-loader'
+					loader: 'url-loader', 
 					options: {
-					  limit: 8192, // Размер <= 8kb будут преобразованы в Base64
+					  limit: 8192, 
 					},
 				  },
 				],
@@ -64,7 +64,7 @@ let conf = {
 			filename: 'main.css'
 		}),
 		new HtmlWebpackPlugin({
-			template: './public/index.html',
+			template: './dist/index.html',
 			filename: 'index.html',
 			inject: 'body' 
 		})
