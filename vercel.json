@@ -3,7 +3,7 @@
     "routes": [
       {
         "src": "/(?!dist/).*",
-        "dest": "/dist/$0",
+        "dest": "./dist/$0",
         "headers": { "cache-control": "public,max-age=0,must-revalidate" }
       }
     ]
